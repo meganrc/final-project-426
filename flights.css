@@ -1,5 +1,6 @@
 body {
 	background-color: rgb(104, 188, 243);
+  
 }
 
 .upper {
@@ -8,6 +9,15 @@ body {
 	width: 1000px;
   height: 400px;
 
+}
+
+.left-upper{
+  float: left;
+  top: 50%;
+  height: 300px;
+  width: 500px;
+  align-items: center; 
+  justify-content: center;
 }
 
 .right-upper {

@@ -172,10 +172,10 @@ $(".login").on('click',()=>{
 	   		
 
 	   		//$(".upper").append("<b>Make an Airline Reservation lol fix this</b><br>");
-	   		$(".right-upper").append("<b>Your Reservations:</b>");
+	   		$(".left-upper").append("<b class='book-flight'>Book a Flight</b>");
+	   		$(".right-upper").append("<b>Your Reservations</b>");
 	   		$(".left-lower").append("<b>Track a Flight</b>");
 	   		$(".right-lower").append("<b></b>");
-
 
 
 	   		// SELECT AN AIRLINE:
@@ -184,9 +184,11 @@ $(".login").on('click',()=>{
 	   		let browse_departures_clicked = 0;
 
 	   		//$(".upper").append("<div class='airline-search-container'><button class='browse-airlines'>Select Airline:</button></div>");
-	   		$(".upper").append("<div class='departure-search-container'><button class='browse-departures'>Select Departure:</button></div>");
-	   		$(".upper").append("<div class='destination-search-container'><button class='browse-destinations'>Select Destination:</button></div>");
-	   		$(".upper").append("<div class='find-flights-container'><button class='find-flights'>Find Flights</button></div>");
+	   		//Find Flights Container Content
+	   		$(".left-upper").after("<div class='departure-search-container'><button class='browse-departures'>Select Departure:</button></div>");
+	   		$(".left-upper").after("<div class='destination-search-container'><button class='browse-destinations'>Select Destination:</button></div>");
+	   		$(".left-upper").after("<div class='find-flights-container'><button class='find-flights'>Find Flights</button></div>");
+
 
 	   		
 	   // 		$("body").on("click",".browse-airlines", function() {
@@ -298,13 +300,9 @@ $(".login").on('click',()=>{
 					
 					$(".browse-departures").before("<p class='selected-departure' data-departureid='"+departure_id_num+"'>"+departure_name.split(' ')[0]+departure_name.split(' ')[1]+"</p>");
 
-
-
 				});
 				
 	   		});
-
-
 
 	   		// SELECT DESTINATION
 
@@ -388,13 +386,22 @@ $(".login").on('click',()=>{
 							   success: (response) => {
 							   		if(response.length > 0) {
 
+							   			// need to hide everything and just show flight info
+							   			$('.account-main-page').children().remove(); 
+							   			$('.browse-departures').remove(); 
+							      		$('.browse-destinations').remove();
+							      		$('.find-flights').remove();
+
 							   			// need to find: airline name, departure city & destination
 							   			let num_rows = response.length;
 							   			//console.log(response); 
 							      	
 							      		// clear previous flight table:
-							      		$(".flight-table").remove();
-							      		$(".find-flights-container").append("<table class='flight-table'><tr><th>Flight Number</th><th>Airline</th><th>Departing From</th><th>Destination</th><th>Departure Time</th><th>Arrival Time</th></tr></table>");
+							      	//	$(".flight-table").remove();
+							      	//	$(".find-flights-container").append("<table class='flight-table'><tr><th>Flight Number</th><th>Airline</th><th>Departing From</th><th>Destination</th><th>Departure Time</th><th>Arrival Time</th></tr></table>");
+							      		
+							      		$('.account-main-page').append("<table class='flight-table'><tr><th>Flight Number</th><th>Airline</th><th>Departing From</th><th>Destination</th><th>Departure Time</th><th>Arrival Time</th></tr></table>");
+
 							      		for(let i = 0; i < num_rows; i++){
 							      			let flight_num = response[i].number;
 							      			let departure_time = response[i].departs_at.split('T')[1].substring(0,5);
@@ -408,13 +415,15 @@ $(".login").on('click',()=>{
 							      			let arriving_to = get_airport_by_id(response[i].arrival_id);
 							      			//alert(airline_name);
 
-							      			$(".flight-table").append("<tr class='flight_"+i+"'></tr>");
-							      			$(".flight_"+i).append("<td>"+flight_num+"</td><td>"+airline_name+"</td><td>"+departing_from+"</td><td>"+arriving_to+"</td><td>"+departure_time+" ("+departure_date+")</td><td>"+arrival_time+" ("+arrival_date+")</td>");
-
-							      			
+							      		//	$(".flight-table").append("<tr class='flight_"+i+"'></tr>");
+							      		//	$(".flight_"+i).append("<td>"+flight_num+"</td><td>"+airline_name+"</td><td>"+departing_from+"</td><td>"+arriving_to+"</td><td>"+departure_time+" ("+departure_date+")</td><td>"+arrival_time+" ("+arrival_date+")</td>");
+							      		$('.account-main-page').append("<tr class='flight_"+i+"'></tr>");
+							      		$('.account-main-page').append("<td>"+flight_num+"</td><td>"+airline_name+"</td><td>"+departing_from+"</td><td>"+arriving_to+"</td><td>"+departure_time+" ("+departure_date+")</td><td>"+arrival_time+" ("+arrival_date+")</td>");
+				
 							      		}
-							      	
-							      		
+							      		$('.account-main-page').append("<button class='home'>Go to Home Page</button>");
+							      		$('.account-main-page').append("<button class='select-flight'>Select Flight</button>");
+							   
 
 							   		} else {
 							   			alert("no flights found");
@@ -437,6 +446,24 @@ $(".login").on('click',()=>{
 	});
 });
 
+
+$('body').on('click', '.home', function(){
+	//showHomePage();  <- NEED TO FIX THIS FUNCTION 
+
+});
+	
+
+$('body').on('click', '.select-flight', function(){
+	//display selected flight info
+		//this includes flight ID, airline name, departure time, arrival time
+	//allow option to choose the number of tickents 
+	$('.account-main-page').append('<button class="tickets">How many people are flying?</button>'); 
+	//they can only choose up to four
+
+});
+
+
+
 //function to set up page once logged in
 
 
@@ -444,6 +471,24 @@ $(".login").on('click',()=>{
 }); // Document ready function don't remove
 
 // functions:
+
+function showHomePage(){
+	//FIX THIS GIRL 
+			$('.account-main-page').children().remove();
+			$(".left-upper").append("<b class='book-flight'>Book a Flight</b>");
+	   		$(".right-upper").append("<b>Your Reservations</b>");
+	   		$(".left-lower").append("<b>Track a Flight</b>");
+	   		$(".right-lower").append("<b></b>");
+
+
+	   		//$(".upper").append("<div class='airline-search-container'><button class='browse-airlines'>Select Airline:</button></div>");
+	   		//Find Flights Container Content
+	   		$(".left-upper").after("<div class='departure-search-container'><button class='browse-departures'>Select Departure:</button></div>");
+	   		$(".left-upper").after("<div class='destination-search-container'><button class='browse-destinations'>Select Destination:</button></div>");
+	   		$(".left-upper").after("<div class='find-flights-container'><button class='find-flights'>Find Flights</button></div>");
+
+
+}
 
 function get_airline_by_id(id_number) {
 	let name;
@@ -492,6 +537,9 @@ function get_airport_by_id(id_number) {
 	    
 	      
 	   },
+	   error: (response) => {
+	   	alert("couldn't get airport by the ID"); 
+	   }
 
        });
 	
