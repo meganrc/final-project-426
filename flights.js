@@ -418,12 +418,13 @@ $(".login").on('click',()=>{
 							      		//	$(".flight-table").append("<tr class='flight_"+i+"'></tr>");
 							      		//	$(".flight_"+i).append("<td>"+flight_num+"</td><td>"+airline_name+"</td><td>"+departing_from+"</td><td>"+arriving_to+"</td><td>"+departure_time+" ("+departure_date+")</td><td>"+arrival_time+" ("+arrival_date+")</td>");
 							      		$('.account-main-page').append("<tr class='flight_"+i+"'></tr>");
-							      		$('.account-main-page').append("<td>"+flight_num+"</td><td>"+airline_name+"</td><td>"+departing_from+"</td><td>"+arriving_to+"</td><td>"+departure_time+" ("+departure_date+")</td><td>"+arrival_time+" ("+arrival_date+")</td>");
-				
-							      		}
-							      		$('.account-main-page').append("<button class='home'>Go to Home Page</button>");
-							      		$('.account-main-page').append("<button class='select-flight'>Select Flight</button>");
+							      		$('.account-main-page').append("<td>"+flight_num+"</td><td>"+airline_name+"</td><td>"+departing_from+"</td><td>"+arriving_to+"</td><td>"+departure_time+" ("+departure_date+")</td><td>"+arrival_time+" ("+arrival_date+")</td>" +"<td><button class='select-flight'>Select This Flight</button></td>");
+							      		
 							   
+							      		}
+
+							      		$('.account-main-page').append("<button class='home'>Go to Home Page</button>");
+							      	
 
 							   		} else {
 							   			alert("no flights found");
@@ -448,7 +449,7 @@ $(".login").on('click',()=>{
 
 
 $('body').on('click', '.home', function(){
-	//showHomePage();  <- NEED TO FIX THIS FUNCTION 
+	showHomePage();  //<- NEED TO FIX THIS FUNCTION 
 
 });
 	
@@ -457,11 +458,26 @@ $('body').on('click', '.select-flight', function(){
 	//display selected flight info
 		//this includes flight ID, airline name, departure time, arrival time
 	//allow option to choose the number of tickents 
-	$('.account-main-page').append('<button class="tickets">How many people are flying?</button>'); 
+	if(! $('.account-main-page').children().is('.tickets')){
+		$('.account-main-page').append('<p class="tickets">How many people are flying? (max = 4 tickets)</p>'); 
+		$('.account-main-page').append('<input type="text" class="numTickets"></input>'); 
+		$('.account-main-page').append('<button class="findTickets">Find Tickets</button>'); 
+	}	
 	//they can only choose up to four
 
 });
 
+$('body').on('click', '.findTickets', function(){
+	let numTickets = $('.numTickets').val(); 
+	for(let i =0; i< numTickets; i++){
+		//four rows with Ticket 1 and button to select seat 
+	}
+
+	$.ajax()
+
+
+
+}); 
 
 
 //function to set up page once logged in
@@ -486,8 +502,6 @@ function showHomePage(){
 	   		$(".left-upper").after("<div class='departure-search-container'><button class='browse-departures'>Select Departure:</button></div>");
 	   		$(".left-upper").after("<div class='destination-search-container'><button class='browse-destinations'>Select Destination:</button></div>");
 	   		$(".left-upper").after("<div class='find-flights-container'><button class='find-flights'>Find Flights</button></div>");
-
-
 }
 
 function get_airline_by_id(id_number) {
@@ -506,8 +520,7 @@ function get_airline_by_id(id_number) {
 	     		name = response[i].name;
 	     		
 	     	}
-	     }
-	    
+	     }   
 	      
 	   },
 
@@ -534,7 +547,7 @@ function get_airport_by_id(id_number) {
 	     		
 	     	}
 	     }
-	    
+	  
 	      
 	   },
 	   error: (response) => {
